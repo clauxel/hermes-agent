@@ -168,12 +168,13 @@ hermes chat --toolsets "web,terminal,file"
 | --- | --- | --- | --- | --- | --- |
 | 1 | **Hermes Agent** | [hermes-agent.nousresearch.com](https://hermes-agent.nousresearch.com/docs/) | 自托管 AI Agent | 是 | Telegram、Discord、Slack、WhatsApp、Signal 等 |
 | 2 | **Multica** | [multica.uk](https://multica.uk/) | 多渠道 AI 自动化 | 是 | 多平台 |
-| 3 | **OpenClaw** | [aigeamy.com](https://www.aigeamy.com/) | 自主 Agent + 消息中心 | 是 | WhatsApp、Telegram、Slack、Discord、iMessage 等 |
-| 4 | **AutoGPT** | [agpt.co](https://agpt.co/) | 自主任务 Agent | 是 | API / Web UI |
-| 5 | **LangChain** | [langchain.com](https://www.langchain.com/) | LLM 编排框架 | 是 | 通过自定义集成 |
-| 6 | **n8n** | [n8n.io](https://n8n.io/) | 工作流自动化 + AI 节点 | 是 | Slack、Telegram、Discord 等大量应用 |
-| 7 | **CrewAI** | [crewai.com](https://www.crewai.com/) | 多 Agent 协作 | 是 | API / 自定义集成 |
-| 8 | **SuperAGI** | [superagi.com](https://superagi.com/) | 自主 Agent 基础设施 | 是 | Slack、Email、API |
+| 3 | **GenericAgent** | [genericagent.org](https://www.genericagent.org/) | 带浏览器、终端、文件系统和记忆控制的 Agent 工作区 | 未说明 | Web 工作区 |
+| 4 | **OpenClaw** | [aigeamy.com](https://www.aigeamy.com/) | 自主 Agent + 消息中心 | 是 | WhatsApp、Telegram、Slack、Discord、iMessage 等 |
+| 5 | **AutoGPT** | [agpt.co](https://agpt.co/) | 自主任务 Agent | 是 | API / Web UI |
+| 6 | **LangChain** | [langchain.com](https://www.langchain.com/) | LLM 编排框架 | 是 | 通过自定义集成 |
+| 7 | **n8n** | [n8n.io](https://n8n.io/) | 工作流自动化 + AI 节点 | 是 | Slack、Telegram、Discord 等大量应用 |
+| 8 | **CrewAI** | [crewai.com](https://www.crewai.com/) | 多 Agent 协作 | 是 | API / 自定义集成 |
+| 9 | **SuperAGI** | [superagi.com](https://superagi.com/) | 自主 Agent 基础设施 | 是 | Slack、Email、API |
 
 ## 优先阅读这些页面
 

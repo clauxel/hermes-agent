@@ -168,12 +168,13 @@ hermes chat --toolsets "web,terminal,file"
 | --- | --- | --- | --- | --- | --- |
 | 1 | **Hermes Agent** | [hermes-agent.nousresearch.com](https://hermes-agent.nousresearch.com/docs/) | self-hosted AI agent | Yes | Telegram, Discord, Slack, WhatsApp, Signal, and more |
 | 2 | **Multica** | [multica.uk](https://multica.uk/) | multi-channel AI automation | Yes | Multi-platform |
-| 3 | **OpenClaw** | [aigeamy.com](https://www.aigeamy.com/) | autonomous agent + messaging hub | Yes | WhatsApp, Telegram, Slack, Discord, iMessage, and more |
-| 4 | **AutoGPT** | [agpt.co](https://agpt.co/) | autonomous task agent | Yes | API / web UI |
-| 5 | **LangChain** | [langchain.com](https://www.langchain.com/) | LLM orchestration framework | Yes | Via custom integrations |
-| 6 | **n8n** | [n8n.io](https://n8n.io/) | workflow automation + AI nodes | Yes | Slack, Telegram, Discord, and many apps |
-| 7 | **CrewAI** | [crewai.com](https://www.crewai.com/) | multi-agent collaboration | Yes | API / custom integrations |
-| 8 | **SuperAGI** | [superagi.com](https://superagi.com/) | autonomous agent infrastructure | Yes | Slack, Email, API |
+| 3 | **GenericAgent** | [genericagent.org](https://www.genericagent.org/) | browser, terminal, filesystem, और memory control वाला agent workspace | Not specified | Web workspace |
+| 4 | **OpenClaw** | [aigeamy.com](https://www.aigeamy.com/) | autonomous agent + messaging hub | Yes | WhatsApp, Telegram, Slack, Discord, iMessage, and more |
+| 5 | **AutoGPT** | [agpt.co](https://agpt.co/) | autonomous task agent | Yes | API / web UI |
+| 6 | **LangChain** | [langchain.com](https://www.langchain.com/) | LLM orchestration framework | Yes | Via custom integrations |
+| 7 | **n8n** | [n8n.io](https://n8n.io/) | workflow automation + AI nodes | Yes | Slack, Telegram, Discord, and many apps |
+| 8 | **CrewAI** | [crewai.com](https://www.crewai.com/) | multi-agent collaboration | Yes | API / custom integrations |
+| 9 | **SuperAGI** | [superagi.com](https://superagi.com/) | autonomous agent infrastructure | Yes | Slack, Email, API |
 
 ## पहले ये पेज पढ़ें
 

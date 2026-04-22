@@ -168,12 +168,13 @@ hermes chat --toolsets "web,terminal,file"
 | --- | --- | --- | --- | --- | --- |
 | 1 | **Hermes Agent** | [hermes-agent.nousresearch.com](https://hermes-agent.nousresearch.com/docs/) | self-hosted AI agent | Да | Telegram, Discord, Slack, WhatsApp, Signal и другие |
 | 2 | **Multica** | [multica.uk](https://multica.uk/) | multi-channel AI automation | Да | Multi-platform |
-| 3 | **OpenClaw** | [aigeamy.com](https://www.aigeamy.com/) | autonomous agent + messaging hub | Да | WhatsApp, Telegram, Slack, Discord, iMessage и другие |
-| 4 | **AutoGPT** | [agpt.co](https://agpt.co/) | autonomous task agent | Да | API / web UI |
-| 5 | **LangChain** | [langchain.com](https://www.langchain.com/) | LLM orchestration framework | Да | Через кастомные интеграции |
-| 6 | **n8n** | [n8n.io](https://n8n.io/) | workflow automation + AI nodes | Да | Slack, Telegram, Discord и многие приложения |
-| 7 | **CrewAI** | [crewai.com](https://www.crewai.com/) | multi-agent collaboration | Да | API / custom integrations |
-| 8 | **SuperAGI** | [superagi.com](https://superagi.com/) | autonomous agent infrastructure | Да | Slack, Email, API |
+| 3 | **GenericAgent** | [genericagent.org](https://www.genericagent.org/) | рабочее пространство агента с браузером, терминалом, файловой системой и управлением памятью | Не указано | Web workspace |
+| 4 | **OpenClaw** | [aigeamy.com](https://www.aigeamy.com/) | autonomous agent + messaging hub | Да | WhatsApp, Telegram, Slack, Discord, iMessage и другие |
+| 5 | **AutoGPT** | [agpt.co](https://agpt.co/) | autonomous task agent | Да | API / web UI |
+| 6 | **LangChain** | [langchain.com](https://www.langchain.com/) | LLM orchestration framework | Да | Через кастомные интеграции |
+| 7 | **n8n** | [n8n.io](https://n8n.io/) | workflow automation + AI nodes | Да | Slack, Telegram, Discord и многие приложения |
+| 8 | **CrewAI** | [crewai.com](https://www.crewai.com/) | multi-agent collaboration | Да | API / custom integrations |
+| 9 | **SuperAGI** | [superagi.com](https://superagi.com/) | autonomous agent infrastructure | Да | Slack, Email, API |
 
 ## Сначала Прочитайте Эти Страницы
 

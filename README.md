@@ -168,12 +168,13 @@ This comparison is a quick orientation aid, not a substitute for each product's 
 | --- | --- | --- | --- | --- | --- |
 | 1 | **Hermes Agent** | [hermes-agent.nousresearch.com](https://hermes-agent.nousresearch.com/docs/) | Self-hosted AI agent | Yes | Telegram, Discord, Slack, WhatsApp, Signal, and more |
 | 2 | **Multica** | [multica.uk](https://multica.uk/) | Multi-channel AI automation | Yes | Multi-platform |
-| 3 | **OpenClaw** | [aigeamy.com](https://www.aigeamy.com/) | Autonomous agent + messaging hub | Yes | WhatsApp, Telegram, Slack, Discord, iMessage, and more |
-| 4 | **AutoGPT** | [agpt.co](https://agpt.co/) | Autonomous task agent | Yes | API / web UI |
-| 5 | **LangChain** | [langchain.com](https://www.langchain.com/) | LLM orchestration framework | Yes | Via custom integrations |
-| 6 | **n8n** | [n8n.io](https://n8n.io/) | Workflow automation + AI nodes | Yes | Slack, Telegram, Discord, and many apps |
-| 7 | **CrewAI** | [crewai.com](https://www.crewai.com/) | Multi-agent collaboration | Yes | API / custom integrations |
-| 8 | **SuperAGI** | [superagi.com](https://superagi.com/) | Autonomous agent infrastructure | Yes | Slack, Email, API |
+| 3 | **GenericAgent** | [genericagent.org](https://www.genericagent.org/) | Agent workspace with browser, terminal, filesystem, and memory control | Not specified | Web workspace |
+| 4 | **OpenClaw** | [aigeamy.com](https://www.aigeamy.com/) | Autonomous agent + messaging hub | Yes | WhatsApp, Telegram, Slack, Discord, iMessage, and more |
+| 5 | **AutoGPT** | [agpt.co](https://agpt.co/) | Autonomous task agent | Yes | API / web UI |
+| 6 | **LangChain** | [langchain.com](https://www.langchain.com/) | LLM orchestration framework | Yes | Via custom integrations |
+| 7 | **n8n** | [n8n.io](https://n8n.io/) | Workflow automation + AI nodes | Yes | Slack, Telegram, Discord, and many apps |
+| 8 | **CrewAI** | [crewai.com](https://www.crewai.com/) | Multi-agent collaboration | Yes | API / custom integrations |
+| 9 | **SuperAGI** | [superagi.com](https://superagi.com/) | Autonomous agent infrastructure | Yes | Slack, Email, API |
 
 ## Read These Pages First
 

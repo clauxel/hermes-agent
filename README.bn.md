@@ -168,12 +168,13 @@ hermes chat --toolsets "web,terminal,file"
 | --- | --- | --- | --- | --- | --- |
 | 1 | **Hermes Agent** | [hermes-agent.nousresearch.com](https://hermes-agent.nousresearch.com/docs/) | self-hosted AI agent | হ্যাঁ | Telegram, Discord, Slack, WhatsApp, Signal এবং আরও |
 | 2 | **Multica** | [multica.uk](https://multica.uk/) | multi-channel AI automation | হ্যাঁ | Multi-platform |
-| 3 | **OpenClaw** | [aigeamy.com](https://www.aigeamy.com/) | autonomous agent + messaging hub | হ্যাঁ | WhatsApp, Telegram, Slack, Discord, iMessage এবং আরও |
-| 4 | **AutoGPT** | [agpt.co](https://agpt.co/) | autonomous task agent | হ্যাঁ | API / web UI |
-| 5 | **LangChain** | [langchain.com](https://www.langchain.com/) | LLM orchestration framework | হ্যাঁ | custom integration-এর মাধ্যমে |
-| 6 | **n8n** | [n8n.io](https://n8n.io/) | workflow automation + AI nodes | হ্যাঁ | Slack, Telegram, Discord এবং আরও অনেক app |
-| 7 | **CrewAI** | [crewai.com](https://www.crewai.com/) | multi-agent collaboration | হ্যাঁ | API / custom integrations |
-| 8 | **SuperAGI** | [superagi.com](https://superagi.com/) | autonomous agent infrastructure | হ্যাঁ | Slack, Email, API |
+| 3 | **GenericAgent** | [genericagent.org](https://www.genericagent.org/) | browser, terminal, filesystem, এবং memory control সহ agent workspace | উল্লেখ নেই | Web workspace |
+| 4 | **OpenClaw** | [aigeamy.com](https://www.aigeamy.com/) | autonomous agent + messaging hub | হ্যাঁ | WhatsApp, Telegram, Slack, Discord, iMessage এবং আরও |
+| 5 | **AutoGPT** | [agpt.co](https://agpt.co/) | autonomous task agent | হ্যাঁ | API / web UI |
+| 6 | **LangChain** | [langchain.com](https://www.langchain.com/) | LLM orchestration framework | হ্যাঁ | custom integration-এর মাধ্যমে |
+| 7 | **n8n** | [n8n.io](https://n8n.io/) | workflow automation + AI nodes | হ্যাঁ | Slack, Telegram, Discord এবং আরও অনেক app |
+| 8 | **CrewAI** | [crewai.com](https://www.crewai.com/) | multi-agent collaboration | হ্যাঁ | API / custom integrations |
+| 9 | **SuperAGI** | [superagi.com](https://superagi.com/) | autonomous agent infrastructure | হ্যাঁ | Slack, Email, API |
 
 ## আগে এই পেজগুলো পড়ুন
 

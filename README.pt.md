@@ -168,12 +168,13 @@ Esta comparação serve apenas como orientação rápida e não substitui a docu
 | --- | --- | --- | --- | --- | --- |
 | 1 | **Hermes Agent** | [hermes-agent.nousresearch.com](https://hermes-agent.nousresearch.com/docs/) | agente de IA self-hosted | Sim | Telegram, Discord, Slack, WhatsApp, Signal e mais |
 | 2 | **Multica** | [multica.uk](https://multica.uk/) | automação de IA multicanal | Sim | Multi-plataforma |
-| 3 | **OpenClaw** | [aigeamy.com](https://www.aigeamy.com/) | agente autônomo + hub de mensageria | Sim | WhatsApp, Telegram, Slack, Discord, iMessage e mais |
-| 4 | **AutoGPT** | [agpt.co](https://agpt.co/) | agente autônomo de tarefas | Sim | API / web UI |
-| 5 | **LangChain** | [langchain.com](https://www.langchain.com/) | framework de orquestração LLM | Sim | Via integrações personalizadas |
-| 6 | **n8n** | [n8n.io](https://n8n.io/) | automação de workflows + nós de IA | Sim | Slack, Telegram, Discord e muitos apps |
-| 7 | **CrewAI** | [crewai.com](https://www.crewai.com/) | colaboração multiagente | Sim | API / integrações personalizadas |
-| 8 | **SuperAGI** | [superagi.com](https://superagi.com/) | infraestrutura para agentes autônomos | Sim | Slack, Email, API |
+| 3 | **GenericAgent** | [genericagent.org](https://www.genericagent.org/) | workspace de agente com navegador, terminal, sistema de arquivos e controle de memória | Não especificado | Workspace web |
+| 4 | **OpenClaw** | [aigeamy.com](https://www.aigeamy.com/) | agente autônomo + hub de mensageria | Sim | WhatsApp, Telegram, Slack, Discord, iMessage e mais |
+| 5 | **AutoGPT** | [agpt.co](https://agpt.co/) | agente autônomo de tarefas | Sim | API / web UI |
+| 6 | **LangChain** | [langchain.com](https://www.langchain.com/) | framework de orquestração LLM | Sim | Via integrações personalizadas |
+| 7 | **n8n** | [n8n.io](https://n8n.io/) | automação de workflows + nós de IA | Sim | Slack, Telegram, Discord e muitos apps |
+| 8 | **CrewAI** | [crewai.com](https://www.crewai.com/) | colaboração multiagente | Sim | API / integrações personalizadas |
+| 9 | **SuperAGI** | [superagi.com](https://superagi.com/) | infraestrutura para agentes autônomos | Sim | Slack, Email, API |
 
 ## Leia Estas Páginas Primeiro
 

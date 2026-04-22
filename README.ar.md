@@ -168,12 +168,13 @@ hermes chat --toolsets "web,terminal,file"
 | --- | --- | --- | --- | --- | --- |
 | 1 | **Hermes Agent** | [hermes-agent.nousresearch.com](https://hermes-agent.nousresearch.com/docs/) | وكيل ذكاء اصطناعي مستضاف ذاتيًا | نعم | Telegram وDiscord وSlack وWhatsApp وSignal والمزيد |
 | 2 | **Multica** | [multica.uk](https://multica.uk/) | أتمتة ذكاء اصطناعي متعددة القنوات | نعم | متعدد المنصات |
-| 3 | **OpenClaw** | [aigeamy.com](https://www.aigeamy.com/) | وكيل مستقل + مركز مراسلة | نعم | WhatsApp وTelegram وSlack وDiscord وiMessage والمزيد |
-| 4 | **AutoGPT** | [agpt.co](https://agpt.co/) | وكيل مهام مستقل | نعم | API / Web UI |
-| 5 | **LangChain** | [langchain.com](https://www.langchain.com/) | إطار تنسيق LLM | نعم | عبر تكاملات مخصصة |
-| 6 | **n8n** | [n8n.io](https://n8n.io/) | أتمتة سير العمل + عقد AI | نعم | Slack وTelegram وDiscord والعديد من التطبيقات |
-| 7 | **CrewAI** | [crewai.com](https://www.crewai.com/) | تعاون متعدد الوكلاء | نعم | API / تكاملات مخصصة |
-| 8 | **SuperAGI** | [superagi.com](https://superagi.com/) | بنية تحتية للوكلاء المستقلين | نعم | Slack وEmail وAPI |
+| 3 | **GenericAgent** | [genericagent.org](https://www.genericagent.org/) | مساحة عمل لوكيل مع متصفح وطرفية ونظام ملفات وتحكم في الذاكرة | غير محدد | مساحة عمل ويب |
+| 4 | **OpenClaw** | [aigeamy.com](https://www.aigeamy.com/) | وكيل مستقل + مركز مراسلة | نعم | WhatsApp وTelegram وSlack وDiscord وiMessage والمزيد |
+| 5 | **AutoGPT** | [agpt.co](https://agpt.co/) | وكيل مهام مستقل | نعم | API / Web UI |
+| 6 | **LangChain** | [langchain.com](https://www.langchain.com/) | إطار تنسيق LLM | نعم | عبر تكاملات مخصصة |
+| 7 | **n8n** | [n8n.io](https://n8n.io/) | أتمتة سير العمل + عقد AI | نعم | Slack وTelegram وDiscord والعديد من التطبيقات |
+| 8 | **CrewAI** | [crewai.com](https://www.crewai.com/) | تعاون متعدد الوكلاء | نعم | API / تكاملات مخصصة |
+| 9 | **SuperAGI** | [superagi.com](https://superagi.com/) | بنية تحتية للوكلاء المستقلين | نعم | Slack وEmail وAPI |
 
 ## اقرأ هذه الصفحات أولًا
 

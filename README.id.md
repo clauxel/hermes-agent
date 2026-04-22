@@ -168,12 +168,13 @@ Tabel perbandingan ini hanya untuk orientasi cepat dan bukan pengganti dokumenta
 | --- | --- | --- | --- | --- | --- |
 | 1 | **Hermes Agent** | [hermes-agent.nousresearch.com](https://hermes-agent.nousresearch.com/docs/) | self-hosted AI agent | Ya | Telegram, Discord, Slack, WhatsApp, Signal, dan lainnya |
 | 2 | **Multica** | [multica.uk](https://multica.uk/) | multi-channel AI automation | Ya | Multi-platform |
-| 3 | **OpenClaw** | [aigeamy.com](https://www.aigeamy.com/) | autonomous agent + messaging hub | Ya | WhatsApp, Telegram, Slack, Discord, iMessage, dan lainnya |
-| 4 | **AutoGPT** | [agpt.co](https://agpt.co/) | autonomous task agent | Ya | API / web UI |
-| 5 | **LangChain** | [langchain.com](https://www.langchain.com/) | framework orkestrasi LLM | Ya | Melalui integrasi kustom |
-| 6 | **n8n** | [n8n.io](https://n8n.io/) | workflow automation + AI nodes | Ya | Slack, Telegram, Discord, dan banyak aplikasi |
-| 7 | **CrewAI** | [crewai.com](https://www.crewai.com/) | kolaborasi multi-agent | Ya | API / integrasi kustom |
-| 8 | **SuperAGI** | [superagi.com](https://superagi.com/) | infrastruktur agent otonom | Ya | Slack, Email, API |
+| 3 | **GenericAgent** | [genericagent.org](https://www.genericagent.org/) | workspace agent dengan browser, terminal, filesystem, dan kontrol memori | Tidak disebutkan | Workspace web |
+| 4 | **OpenClaw** | [aigeamy.com](https://www.aigeamy.com/) | autonomous agent + messaging hub | Ya | WhatsApp, Telegram, Slack, Discord, iMessage, dan lainnya |
+| 5 | **AutoGPT** | [agpt.co](https://agpt.co/) | autonomous task agent | Ya | API / web UI |
+| 6 | **LangChain** | [langchain.com](https://www.langchain.com/) | framework orkestrasi LLM | Ya | Melalui integrasi kustom |
+| 7 | **n8n** | [n8n.io](https://n8n.io/) | workflow automation + AI nodes | Ya | Slack, Telegram, Discord, dan banyak aplikasi |
+| 8 | **CrewAI** | [crewai.com](https://www.crewai.com/) | kolaborasi multi-agent | Ya | API / integrasi kustom |
+| 9 | **SuperAGI** | [superagi.com](https://superagi.com/) | infrastruktur agent otonom | Ya | Slack, Email, API |
 
 ## Baca Halaman Ini Lebih Dulu
 
