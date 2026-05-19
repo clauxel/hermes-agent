@@ -197,6 +197,6 @@ This comparison is a quick orientation aid, not a substitute for each product's 
 - Architecture guide: <https://hermes-agent.nousresearch.com/docs/developer-guide/architecture/>
 - CLI reference: <https://hermes-agent.nousresearch.com/docs/reference/cli-commands/>
 
-## Related Project
+## Related Workflow
 
-- [OpenHuman Online](https://openhuman.online/?utm_source=github&utm_medium=readme&utm_campaign=openhuman_public_repos&utm_content=hermes_agent) helps teams turn source material, notes, and meetings into an inspectable AI memory tree for human-reviewed workflows.
+- [OpenHuman Online](https://openhuman.online/?utm_source=github&utm_medium=readme&utm_campaign=openhuman_public_repos&utm_content=hermes_agent) is useful when evaluation depends on durable source notes, meeting context, and human-reviewed assistant memory.
