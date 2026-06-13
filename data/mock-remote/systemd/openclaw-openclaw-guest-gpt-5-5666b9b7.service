@@ -1,0 +1,35 @@
+[Unit]
+Description=OpenClaw instance openclaw-openclaw-guest-gpt-5-5666b9b7
+After=network.target
+
+[Service]
+Type=simple
+User=ocl_openclaw-g-5666b9b7
+Group=ocl_openclaw-g-5666b9b7
+WorkingDirectory=/srv/openclaw/instances/openclaw-guest-gpt-5-4-whatsapp-33910d
+EnvironmentFile=/srv/openclaw/instances/openclaw-guest-gpt-5-4-whatsapp-33910d/.env
+Environment=HOME=/srv/openclaw/instances/openclaw-guest-gpt-5-4-whatsapp-33910d
+Environment=XDG_CACHE_HOME=/srv/openclaw/instances/openclaw-guest-gpt-5-4-whatsapp-33910d/.cache
+Environment=NPM_CONFIG_CACHE=/srv/openclaw/instances/openclaw-guest-gpt-5-4-whatsapp-33910d/.npm
+Environment=TMPDIR=/srv/openclaw/instances/openclaw-guest-gpt-5-4-whatsapp-33910d/.tmp
+ExecStart=/bin/bash -lc 'PATH=/usr/local/bin:/usr/bin:/bin:$PATH openclaw gateway run --allow-unconfigured --bind lan --port "$PORT" --token "$OPENCLAW_GATEWAY_TOKEN" --force'
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+LockPersonality=true
+RestrictSUIDSGID=true
+RestrictNamespaces=true
+RestrictRealtime=true
+SystemCallArchitectures=native
+UMask=0077
+ReadWritePaths=/srv/openclaw/instances/openclaw-guest-gpt-5-4-whatsapp-33910d
+
+[Install]
+WantedBy=multi-user.target

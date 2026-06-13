@@ -1,0 +1,26 @@
+# Hermes Agent
+
+Updated: 2026-06-12
+Canonical: https://hermesagent.studio/
+Support: support@aigeamy.com
+
+## Summary
+Hermes Agent is a Persistent AI agent workspace for teams evaluating persistent AI agents, agent memory, and workflow automation. It helps users get a persistent agent workflow with memory, tool use, pricing, support, setup evidence, and clear recovery paths.
+
+## Core pages
+- Home: https://hermesagent.studio/
+- Pricing: https://hermesagent.studio/pricing/
+- Checkout fallback: https://hermesagent.studio/checkout/
+- Privacy: https://hermesagent.studio/privacy/
+- Terms: https://hermesagent.studio/terms/
+
+## Traffic intent pages
+- persistent AI agent: https://hermesagent.studio/persistent-ai-agent/ - Persistent AI Agent Workflow Guide
+- AI agent memory: https://hermesagent.studio/ai-agent-memory/ - AI Agent Memory Guide for Hermes Agent
+- agent workflow automation: https://hermesagent.studio/agent-workflow-automation/ - Agent Workflow Automation with Hermes Agent
+
+## Pricing anchors
+- Starter: $29/mo public planning anchor
+- Team: $99/mo public planning anchor
+- Platform: $249/mo public planning anchor
+

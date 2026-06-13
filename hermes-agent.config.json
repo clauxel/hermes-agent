@@ -1,0 +1,26 @@
+{
+  "deployment": {
+    "provider": "ssh",
+    "targetServer": "production-hermes-server",
+    "consoleBaseUrl": "https://console.hermes.local",
+    "publicBaseUrl": "https://hermes.local",
+    "mockRootDir": "./data/mock-remote"
+  },
+  "hermes": {
+    "sourceType": "git",
+    "archiveUrl": "",
+    "archivePath": "",
+    "repoUrl": "https://github.com/NousResearch/hermes-agent.git",
+    "repoRef": "v2026.4.8",
+    "baseDir": "/data/hermes",
+    "servicePrefix": "hermes",
+    "runtimeUserPrefix": "hms",
+    "installCommand": "pip install --user -e '.[messaging,cron,pty,mcp]'",
+    "buildCommand": "true",
+    "startCommand": "hermes gateway run",
+    "tokenEnvName": "COMMUNICATION_TOKEN",
+    "modelEnvName": "HERMES_MODEL_ID",
+    "channelEnvName": "HERMES_CHANNEL_ID",
+    "planEnvName": "HERMES_PLAN_ID"
+  }
+}

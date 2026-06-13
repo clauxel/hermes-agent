@@ -1,0 +1,28 @@
+name = "my-hermesagent-studio"
+main = "worker/index.js"
+compatibility_date = "2026-05-11"
+account_id = "615b05ce6668dd8e0e2431077fc29c82"
+workers_dev = true
+routes = [
+  { pattern = "hermesagent.studio/*", zone_name = "hermesagent.studio" },
+  { pattern = "www.hermesagent.studio/*", zone_name = "hermesagent.studio" }
+]
+
+[vars]
+APP_ORIGIN = "https://hermesagent.studio"
+PAYMENT_PROVIDER = "creem"
+CREEM_ENV = "live"
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+run_worker_first = [
+  "/*"
+]
+
+[[d1_databases]]
+binding = "DB"
+# Shared production analytics D1. Rows are isolated by site_key.
+database_name = "openclaw-launch"
+database_id = "5c31068a-d85a-4c83-9efe-01e2de1ad22b"

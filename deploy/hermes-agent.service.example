@@ -1,0 +1,17 @@
+[Unit]
+Description=Hermes Agent
+After=network.target
+
+[Service]
+Type=simple
+User=hermes
+Group=hermes
+WorkingDirectory=/data/hermes-agent/app
+Environment=HOME=/home/hermes
+EnvironmentFile=/data/hermes-agent/hermes-agent.env
+ExecStart=/usr/bin/npm run start
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

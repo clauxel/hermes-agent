@@ -1,0 +1,33 @@
+{
+  "name": "hermes-agent",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "dev:deploy": "bash scripts/deploy-development.sh",
+    "router:start": "node server-router.mjs",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "start": "node server.mjs --mode production",
+    "test": "node --test test/*.test.mjs",
+    "postgres:setup": "node scripts/setup-postgres-server.mjs",
+    "hermes:package": "node scripts/package-remote-hermes-instance.mjs"
+  },
+  "dependencies": {
+    "lucide-react": "^0.543.0",
+    "pg": "^8.20.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "ssh2": "^1.17.0",
+    "undici": "^8.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@vitejs/plugin-react": "^6.0.1",
+    "pg-mem": "^3.0.14",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.1"
+  }
+}

@@ -1,0 +1,17 @@
+[Unit]
+Description=Hermes Instance Router (dev)
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/data/hermes-router/app
+EnvironmentFile=/data/hermes-router/hermes-instance-router-dev.env
+ExecStart=/usr/local/bin/node /data/hermes-router/app/server-router.mjs
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
