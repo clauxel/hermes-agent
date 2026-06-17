@@ -11,5 +11,7 @@ hermes-agent.config.json
 .tmp-remote-*.mjs
 %TEMP%/
 temp.txt
-{console.error(e.message)
+[{]console.error(e.message)
 运维待办.md
+.wrangler/
+public-hotwords/

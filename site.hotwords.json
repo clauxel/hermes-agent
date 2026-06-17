@@ -1,0 +1,24 @@
+{
+  "brand": "Hermes Agent Studio",
+  "domain": "hermesagent.studio",
+  "tagline": "Independent workflow pages for teams evaluating Hermes Agent CLI, MCP connections, tools, and developer setup.",
+  "description": "Independent workflow pages for teams evaluating Hermes Agent CLI, MCP connections, tools, and developer setup.",
+  "audience": "developers evaluating Hermes Agent workflows, tool setup, skills, and MCP integrations",
+  "pages": [
+    [
+      "hermes-agent-cli",
+      "Hermes Agent CLI workflow",
+      "Understand the developer workflow for installing, configuring, and operating Hermes Agent from the terminal."
+    ],
+    [
+      "ai-agent-cli",
+      "AI agent CLI for developer workstreams",
+      "Compare the practical requirements for terminal agents, tools, sessions, memory, and team handoff."
+    ],
+    [
+      "hermes-mcp-workflow",
+      "Hermes MCP workflow guide",
+      "Plan how Hermes Agent connects to MCP servers, tool permissions, context files, and auditable runs."
+    ]
+  ]
+}

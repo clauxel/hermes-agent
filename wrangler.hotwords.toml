@@ -1,0 +1,23 @@
+name = "hermesagent-hotword-pages"
+main = "worker/hotwords.js"
+compatibility_date = "2026-06-17"
+workers_dev = true
+routes = [
+  { pattern = "hermesagent.studio/hermes-agent-cli*", zone_name = "hermesagent.studio" },
+  { pattern = "hermesagent.studio/ai-agent-cli*", zone_name = "hermesagent.studio" },
+  { pattern = "hermesagent.studio/hermes-mcp-workflow*", zone_name = "hermesagent.studio" },
+  { pattern = "hermesagent.studio/sitemap.xml*", zone_name = "hermesagent.studio" },
+  { pattern = "hermesagent.studio/robots.txt*", zone_name = "hermesagent.studio" },
+  { pattern = "hermesagent.studio/llms.txt*", zone_name = "hermesagent.studio" },
+  { pattern = "www.hermesagent.studio/hermes-agent-cli*", zone_name = "hermesagent.studio" },
+  { pattern = "www.hermesagent.studio/ai-agent-cli*", zone_name = "hermesagent.studio" },
+  { pattern = "www.hermesagent.studio/hermes-mcp-workflow*", zone_name = "hermesagent.studio" },
+  { pattern = "www.hermesagent.studio/sitemap.xml*", zone_name = "hermesagent.studio" },
+  { pattern = "www.hermesagent.studio/robots.txt*", zone_name = "hermesagent.studio" },
+  { pattern = "www.hermesagent.studio/llms.txt*", zone_name = "hermesagent.studio" }
+]
+
+[assets]
+directory = "./public-hotwords"
+binding = "ASSETS"
+run_worker_first = true
