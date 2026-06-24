@@ -45,7 +45,7 @@ async function clearAllTables(database) {
     'deployments',
     'sessions',
     'orders',
-    'creem_products',
+    'polar_products',
     'users',
   ]
 

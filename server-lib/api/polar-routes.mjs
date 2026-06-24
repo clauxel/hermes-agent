@@ -28,17 +28,17 @@ function createOrderId(randomBytes) {
   return Date.now().toString(36) + Math.random().toString(16).slice(2)
 }
 
-function getNowPaymentsSettings() {
+function getPolarSettings() {
   return {
-    apiKey: String(process.env.NOWPAYMENTS_API_KEY || process.env.NOWPAYMENTS_KEY || '').trim(),
-    baseUrl: stripTrailingSlash(process.env.NOWPAYMENTS_BASE_URL || 'https://api.nowpayments.io'),
-    payCurrency: String(process.env.NOWPAYMENTS_PAY_CURRENCY || 'USDCMATIC').trim().toUpperCase(),
+    apiKey: String(process.env.POLAR_API_KEY || process.env.POLAR_KEY || '').trim(),
+    baseUrl: stripTrailingSlash(process.env.POLAR_BASE_URL || 'https://api.polar.sh'),
+    payCurrency: String(process.env.POLAR_PAY_CURRENCY || 'USD').trim().toUpperCase(),
   }
 }
 
-async function createNowPaymentsInvoice(invoice) {
-  const settings = getNowPaymentsSettings()
-  if (!settings.apiKey) throw createRouteError(503, 'NOWPayments is not configured on this deployment.')
+async function createPolarInvoice(invoice) {
+  const settings = getPolarSettings()
+  if (!settings.apiKey) throw createRouteError(503, 'Polar is not configured on this deployment.')
 
   const response = await fetch(settings.baseUrl + '/v1/invoice', {
     method: 'POST',
@@ -50,13 +50,13 @@ async function createNowPaymentsInvoice(invoice) {
   })
   const payload = await response.json().catch(() => null)
   if (!response.ok) {
-    const message = payload?.message || payload?.error || 'NOWPayments invoice could not be created.'
+    const message = payload?.message || payload?.error || 'Polar invoice could not be created.'
     throw createRouteError(response.status === 401 || response.status === 403 ? response.status : 502, message)
   }
 
   const checkoutUrl = firstString([payload?.invoice_url, payload?.invoiceUrl, payload?.url])
   const invoiceId = firstString([payload?.id, payload?.invoice_id, payload?.invoiceId])
-  if (!checkoutUrl) throw createRouteError(502, 'NOWPayments invoice did not return a payment URL.')
+  if (!checkoutUrl) throw createRouteError(502, 'Polar invoice did not return a payment URL.')
   return { checkoutUrl, invoiceId, payCurrency: settings.payCurrency }
 }
 
@@ -74,11 +74,11 @@ function resolvePlanForWallet(body, deps) {
   return deps.resolvePlanSelection(planId, options)
 }
 
-export function createNowPaymentsRoutes(deps) {
+export function createPolarRoutes(deps) {
   const { getPublicAppOrigin, randomBytes, readJsonBody, sendJson } = deps
 
   return [
-    createExactRoute('POST', '/api/nowpayments-checkout', async ({ request, response }) => {
+    createExactRoute('POST', '/api/polar-checkout', async ({ request, response }) => {
       try {
         const body = await readJsonBody(request)
         const selection = resolvePlanForWallet(body, deps)
@@ -88,20 +88,20 @@ export function createNowPaymentsRoutes(deps) {
         const orderId = createOrderId(randomBytes)
         const orderNumber = 'USDC-' + Date.now().toString(36).toUpperCase() + '-' + orderId.slice(0, 6).toUpperCase()
         const successUrl = new URL((origin || 'http://localhost') + '/')
-        successUrl.searchParams.set('checkout', 'nowpayments_pending')
-        successUrl.searchParams.set('provider', 'nowpayments')
+        successUrl.searchParams.set('checkout', 'polar_pending')
+        successUrl.searchParams.set('provider', 'polar')
         successUrl.searchParams.set('order', orderId)
         successUrl.searchParams.set('plan', selection.planId)
         const cancelUrl = new URL((origin || 'http://localhost') + '/')
         cancelUrl.searchParams.set('checkout', 'cancelled')
-        cancelUrl.searchParams.set('provider', 'nowpayments')
+        cancelUrl.searchParams.set('provider', 'polar')
         cancelUrl.searchParams.set('order', orderId)
         cancelUrl.searchParams.set('plan', selection.planId)
 
-        const invoice = await createNowPaymentsInvoice({
+        const invoice = await createPolarInvoice({
           price_amount: formatAmountCents(selection.amountCents),
           price_currency: String(selection.plan?.currency || 'USD').toLowerCase(),
-          pay_currency: String(process.env.NOWPAYMENTS_PAY_CURRENCY || 'USDCMATIC').trim().toUpperCase(),
+          pay_currency: String(process.env.POLAR_PAY_CURRENCY || 'USD').trim().toUpperCase(),
           order_id: orderId,
           order_description: `${selection.plan?.name || selection.planId} ${selection.billingCycle || ''} wallet checkout - ${orderNumber}`.trim(),
           success_url: successUrl.toString(),
@@ -112,11 +112,11 @@ export function createNowPaymentsRoutes(deps) {
 
         sendJson(response, 200, {
           ok: true,
-          message: 'NOWPayments invoice is ready.',
+          message: 'Polar invoice is ready.',
           checkoutUrl: invoice.checkoutUrl,
-          paymentProvider: 'nowpayments',
-          provider: 'nowpayments',
-          nowpaymentsInvoiceId: invoice.invoiceId || null,
+          paymentProvider: 'polar',
+          provider: 'polar',
+          polarInvoiceId: invoice.invoiceId || null,
           payCurrency: invoice.payCurrency,
           orderId,
           orderNumber,
@@ -127,7 +127,7 @@ export function createNowPaymentsRoutes(deps) {
         })
       } catch (error) {
         const status = Number(error?.statusCode) || 500
-        const message = error instanceof Error ? error.message : 'NOWPayments checkout could not be started.'
+        const message = error instanceof Error ? error.message : 'Polar checkout could not be started.'
         sendJson(response, status, { ok: false, message, error: message })
       }
     }),

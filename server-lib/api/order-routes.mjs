@@ -1,6 +1,6 @@
 import { createExactRoute, createPatternRoute } from './route-utils.mjs'
 
-const creemRedirectParamKeys = new Set([
+const polarRedirectParamKeys = new Set([
   'checkout_id',
   'order_id',
   'customer_id',
@@ -10,13 +10,13 @@ const creemRedirectParamKeys = new Set([
   'signature',
 ])
 
-function normalizeCreemRedirectPayload(value) {
+function normalizePolarRedirectPayload(value) {
   if (!value || typeof value !== 'object') {
     return null
   }
 
   const entries = Object.entries(value)
-    .filter(([key]) => creemRedirectParamKeys.has(key))
+    .filter(([key]) => polarRedirectParamKeys.has(key))
     .map(([key, payloadValue]) => [
       key,
       payloadValue === null || payloadValue === undefined ? null : String(payloadValue),
@@ -60,10 +60,10 @@ export function createOrderRoutes(deps) {
     uninstallHermesInstance,
     requireAuthenticatedUser,
     bindOrderToUserAccount,
-    createCreemCheckoutForOrder,
+    createPolarCheckoutForOrder,
     createPayPalOrderForOrder,
-    getCreemCheckoutId,
-    getCreemCheckoutUrl,
+    getPolarCheckoutId,
+    getPolarCheckoutUrl,
     setOrderCheckoutId,
     setOrderPayPalOrderId,
     getPayPalCheckoutUrl,
@@ -76,8 +76,8 @@ export function createOrderRoutes(deps) {
     listConfiguredHermesVersions,
     getClawHermesVersion,
     upgradeHermesInstance,
-    verifyCreemRedirectSignature,
-    getCreemCheckoutSession,
+    verifyPolarRedirectSignature,
+    getPolarCheckoutSession,
     queuePaidOrder,
     appEnvironment,
     isProduction,
@@ -296,29 +296,29 @@ export function createOrderRoutes(deps) {
           order: await serializeOrder(order),
           checkoutUrl: null,
           paymentProvider,
-          creemCheckoutId: order.creem_checkout_id ?? null,
+          polarCheckoutId: order.polar_checkout_id ?? null,
           paypalOrderId: null,
           paypalClientId: null,
         })
         return
       }
 
-      if (paymentProvider === 'creem') {
-        const checkout = await createCreemCheckoutForOrder(order, request)
-        const checkoutUrl = getCreemCheckoutUrl(checkout)
-        const checkoutId = getCreemCheckoutId(checkout)
+      if (paymentProvider === 'polar') {
+        const checkout = await createPolarCheckoutForOrder(order, request)
+        const checkoutUrl = getPolarCheckoutUrl(checkout)
+        const checkoutId = getPolarCheckoutId(checkout)
 
         if (!checkoutUrl) {
-          throw new HttpError(502, 'Creem checkout did not return a hosted checkout URL.')
+          throw new HttpError(502, 'Polar checkout did not return a hosted checkout URL.')
         }
 
         const orderWithCheckout = checkoutId ? await setOrderCheckoutId(order.id, checkoutId) : order
         sendJson(response, 200, {
-          message: 'Creem checkout is ready.',
+          message: 'Polar checkout is ready.',
           order: await serializeOrder(orderWithCheckout),
           checkoutUrl,
-          paymentProvider: 'creem',
-          creemCheckoutId: checkoutId || null,
+          paymentProvider: 'polar',
+          polarCheckoutId: checkoutId || null,
           paypalOrderId: null,
           paypalClientId: null,
         })
@@ -332,7 +332,7 @@ export function createOrderRoutes(deps) {
         order: await serializeOrder(orderWithCheckout),
         checkoutUrl: getPayPalCheckoutUrl(checkout),
         paymentProvider: 'paypal',
-        creemCheckoutId: null,
+        polarCheckoutId: null,
         paypalOrderId: checkout.id ?? null,
         paypalClientId: payPalClientId || null,
       })
@@ -402,7 +402,7 @@ export function createOrderRoutes(deps) {
         order: await serializeOrder(upgradedOrder),
       })
     }),
-    createPatternRoute('POST', /^\/api\/orders\/([a-f0-9]+)\/creem-confirm$/, async ({ request, response, params }) => {
+    createPatternRoute('POST', /^\/api\/orders\/([a-f0-9]+)\/polar-confirm$/, async ({ request, response, params }) => {
       const context = await requireOrderAccessContext(request)
       const order = await findOrderByIdStatement.get(params[1])
       await assertOrderAccess(context, order)
@@ -417,9 +417,9 @@ export function createOrderRoutes(deps) {
 
       const body = await readJsonBody(request)
       const redirectPayload =
-        normalizeCreemRedirectPayload(body.redirectParams) ?? {
+        normalizePolarRedirectPayload(body.redirectParams) ?? {
               checkout_id: String(body.checkoutId ?? ''),
-              order_id: body.creemOrderId ? String(body.creemOrderId) : null,
+              order_id: body.polarOrderId ? String(body.polarOrderId) : null,
               customer_id: body.customerId ? String(body.customerId) : null,
               subscription_id: body.subscriptionId ? String(body.subscriptionId) : null,
               product_id: String(body.productId ?? ''),
@@ -428,37 +428,37 @@ export function createOrderRoutes(deps) {
             }
 
       if (!redirectPayload.checkout_id) {
-        throw new HttpError(400, 'Creem redirect payload is incomplete.')
+        throw new HttpError(400, 'Polar redirect payload is incomplete.')
       }
 
-      if (order.creem_checkout_id && redirectPayload.checkout_id !== order.creem_checkout_id) {
-        throw new HttpError(400, 'Creem checkout does not belong to this order.')
+      if (order.polar_checkout_id && redirectPayload.checkout_id !== order.polar_checkout_id) {
+        throw new HttpError(400, 'Polar checkout does not belong to this order.')
       }
 
       const matchedOrderId = redirectPayload.request_id ?? null
       if (matchedOrderId && matchedOrderId !== order.id) {
-        throw new HttpError(400, 'Creem request ID does not match this order.')
+        throw new HttpError(400, 'Polar request ID does not match this order.')
       }
 
       const hasVerifiedRedirectSignature =
-        Boolean(redirectPayload.signature) && verifyCreemRedirectSignature(redirectPayload)
+        Boolean(redirectPayload.signature) && verifyPolarRedirectSignature(redirectPayload)
 
       if (!hasVerifiedRedirectSignature) {
-        const checkout = await getCreemCheckoutSession(redirectPayload.checkout_id)
+        const checkout = await getPolarCheckoutSession(redirectPayload.checkout_id)
         const checkoutRequestId = checkout?.request_id ? String(checkout.request_id) : null
         const checkoutStatus = String(checkout?.status ?? '').toLowerCase()
         const orderStatus = String(checkout?.order?.status ?? '').toLowerCase()
 
         if (checkoutRequestId && checkoutRequestId !== order.id) {
-          throw new HttpError(400, 'Creem checkout does not belong to this order.')
+          throw new HttpError(400, 'Polar checkout does not belong to this order.')
         }
 
         if (checkoutStatus !== 'completed' && orderStatus !== 'paid' && orderStatus !== 'completed') {
           throw new HttpError(
             redirectPayload.signature ? 401 : 400,
             redirectPayload.signature
-              ? 'Creem redirect signature is invalid.'
-              : 'Creem checkout is not completed yet.',
+              ? 'Polar redirect signature is invalid.'
+              : 'Polar checkout is not completed yet.',
           )
         }
       }
@@ -466,7 +466,7 @@ export function createOrderRoutes(deps) {
       await queuePaidOrder(order)
 
       sendJson(response, 200, {
-        message: 'Creem payment confirmed. Deployment queue started.',
+        message: 'Polar payment confirmed. Deployment queue started.',
         order: await serializeOrder(await findOrderByIdStatement.get(order.id)),
       })
     }),

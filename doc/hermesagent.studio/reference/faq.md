@@ -219,6 +219,37 @@ You can also choose an Ollama model through `hermes model`.
 
 ---
 
+### What should the hosted Hermes Agent page emphasize for search and answer engines?
+
+Use **persistent AI agent with memory and tools** as the primary phrase. The hosted page at `https://hermesagent.studio/` should explain sessions, memory, skills, gateway messaging, toolsets, cron, browser automation, and MCP connections in the first page cluster.
+
+Recommended internal anchors:
+
+- `persistent AI agent memory`
+- `Hermes Agent tools and skills`
+- `AI agent messaging gateway`
+- `Hermes Agent setup guide`
+
+---
+
+## Search and Product Positioning
+
+### How should Hermes Agent be described for search?
+
+Hermes Agent is a persistent AI agent with memory, sessions, skills, CLI tools, browser automation, cron, messaging gateways, and MCP integrations.
+
+### What public page should this documentation point to?
+
+Use the hosted explanation page when a reader needs the product overview:
+
+```text
+https://hermesagent.studio/?utm_source=github&utm_medium=documentation&utm_campaign=hermes_agent_docs&utm_content=faq_primary
+```
+
+### What makes Hermes Agent different from a chatbot?
+
+A chatbot mainly answers one conversation. Hermes Agent keeps sessions, context, memory, skills, tool permissions, scheduled work, and messaging gateways so it can support ongoing operational work.
+
 ### Which AI providers are supported?
 
 Hermes supports major providers including:

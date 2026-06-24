@@ -13,7 +13,7 @@ Hermes Agent = 一个前后端同仓的销售/支付/部署控制台：前端负
 - 单仓：`server.mjs` + `src/App.tsx`
 - Node 原生 HTTP 服务同时处理三类流量：静态前端、`/api/*`、`/hermes-console/*` 代理
 - 数据库只支持 PostgreSQL，SQLite 已移除
-- 支付主路径是 Creem，PayPal 还保留在兼容/补偿链路里
+- 支付主路径是 Polar，PayPal 还保留在兼容/补偿链路里
 - Hermes 实例部署支持两种 provider：`mock` / `ssh`
 - 仓库现已支持可选的 Hermes 实例固定路由入口：`205 -> 实例路由服务 -> 116 本机实例端口`
 
@@ -43,7 +43,7 @@ Hermes Agent = 一个前后端同仓的销售/支付/部署控制台：前端负
 
 ## 业务主链路
 - `POST /api/launch-orders`：创建订单，未登录则绑定 guest
-- `POST /api/orders/:id/checkout-session`：创建 Creem / PayPal checkout
+- `POST /api/orders/:id/checkout-session`：创建 Polar / PayPal checkout
 - 支付成功后进入 `queuePaidOrder(...)`
 - 首次支付成功会自动触发一次 deployment；后续可手动追加 deployment
 - `POST /api/orders/:id/hermes-console`：不是直接给裸 console，而是给后端生成的 session URL
@@ -104,15 +104,15 @@ Hermes Agent = 一个前后端同仓的销售/支付/部署控制台：前端负
 - Hermes 实例部署目标：`HERMES_DEPLOY_*`
 - 实例固定路由入口：`HERMES_ROUTER_BASE_URL`、`HERMES_ROUTER_ROUTES_DIR`、`HERMES_ROUTER_SHARED_TOKEN`
 - Launch 站点自身部署脚本使用：`HERMES_LAUNCH_DEPLOY_*`
-- 支付：`PAYMENT_PROVIDER`、`CREEM_ENV`、`API_TEST_KEY` / `API_PROD_KEY`，PayPal 变量仅保留兼容
+- 支付：`PAYMENT_PROVIDER`、`POLAR_ENV`、`API_TEST_KEY` / `API_PROD_KEY`，PayPal 变量仅保留兼容
 - 数据库：`HERMES_POSTGRES_*`
 - 模型代理：`HERMES_MODEL_PROXY_*` + 仅服务端保留的 `QS_KEY`
 - 生产实例机在 `116` 上时，`HERMES_MODEL_PROXY_INTERNAL_BASE_URL` 不能留默认 `127.0.0.1`；应显式指向 Launch 所在的 `205` 私网地址，例如 `http://10.128.0.2:5173/api/internal/model-proxy`
 - 生产模型代理还需把实例机私网地址加入 `HERMES_MODEL_PROXY_ALLOWED_REMOTE_ADDRESSES`（当前为 `10.128.0.4`），否则 `205` 上的内部模型代理仍会拒绝来自 `116` 的请求
 
 ## 当前环境认知
-- `.env.development`：开发模式；PostgreSQL 当前配置为本机 `127.0.0.1:5432`；保留远端 Hermes 部署能力；包含 `HERMES_ALLOW_SIMULATED_DEPLOYMENT` 和 Creem test 配置
-- `.env.production`：生产模式，走 Creem live；PostgreSQL 当前配置也为本机 `127.0.0.1:5432`；远端 Hermes 部署凭据改为私钥路径；不保留模拟部署开关
+- `.env.development`：开发模式；PostgreSQL 当前配置为本机 `127.0.0.1:5432`；保留远端 Hermes 部署能力；包含 `HERMES_ALLOW_SIMULATED_DEPLOYMENT` 和 Polar test 配置
+- `.env.production`：生产模式，走 Polar live；PostgreSQL 当前配置也为本机 `127.0.0.1:5432`；远端 Hermes 部署凭据改为私钥路径；不保留模拟部署开关
 - 两套 env 都把 PayPal 保留为 fallback，不是主支付路径
 
 ## 出问题先看

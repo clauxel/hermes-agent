@@ -139,7 +139,7 @@ Before pushing a production release, confirm:
 - `.env.production` points to the production PostgreSQL database instead of any development database
 - `APP_ORIGIN` matches the public frontend origin
 - `HERMES_CONFIG_PATH` points to the production deployment config file on the server
-- Creem production credentials are present and `PAYMENT_PROVIDER=creem`, `CREEM_ENV=live`
+- Polar production credentials are present and `PAYMENT_PROVIDER=polar`, `POLAR_ENV=live`
 - the production frontend build does not set `VITE_API_BASE_URL`, so browser traffic stays same-origin by default
 - the server-side `hermes` service user has the required `~/.hermes/hermes.json` and `~/.hermes/agents/main/agent/auth-profiles.json`
 - the Hermes archive or repository reference in `hermes-agent.config.json` is valid on the target server
@@ -212,10 +212,10 @@ Required production environment values:
 - `HERMES_POSTGRES_PASSWORD`
 - `HERMES_TOKEN_SECRET`
 - `HERMES_CONFIG_SECRET`
-- `PAYMENT_PROVIDER=creem`
-- `CREEM_ENV=live`
-- `API_PROD_KEY` or `CREEM_API_KEY`
-- optional `CREEM_WEBHOOK_SECRET`
+- `PAYMENT_PROVIDER=polar`
+- `POLAR_ENV=live`
+- `API_PROD_KEY` or `POLAR_API_KEY`
+- optional `POLAR_WEBHOOK_SECRET`
 
 Install the systemd unit:
 
@@ -268,14 +268,14 @@ Frontend configuration on Vercel:
 Backend configuration:
 
 - `APP_ORIGIN=https://www.aigeamy.com,https://aigeamy.com`
-- put the canonical frontend origin first, because Creem hosted return URLs use the first configured origin
-- all existing Creem, PostgreSQL, and Hermes deployment variables remain on the backend host
+- put the canonical frontend origin first, because Polar hosted return URLs use the first configured origin
+- all existing Polar, PostgreSQL, and Hermes deployment variables remain on the backend host
 
 Behavior:
 
 - the frontend calls `https://api.aigeamy.com/api/*`
 - the backend accepts cross-origin credentialed requests from `https://www.aigeamy.com`
-- Creem hosted return URLs send the user back to the frontend origin instead of the API origin
+- Polar hosted return URLs send the user back to the frontend origin instead of the API origin
 
 Verification:
 
@@ -327,21 +327,21 @@ The repo already ignores them through [.gitignore](./.gitignore).
 
 ## 10. Payment Keys
 
-Creem payment credentials are configured through environment variables.
+Polar payment credentials are configured through environment variables.
 
-- Active provider: `PAYMENT_PROVIDER=creem`
-- Environment selector: `CREEM_ENV=test|live`
-- Test API key: `API_TEST_KEY` or `CREEM_TEST_KEY`
-- Live API key: `API_PROD_KEY`, `CREEM_API_KEY`, or `CREEM_KEY`
-- Optional API override: `CREEM_BASE_URL`
-- Optional webhook secret: `CREEM_WEBHOOK_SECRET`
+- Active provider: `PAYMENT_PROVIDER=polar`
+- Environment selector: `POLAR_ENV=test|live`
+- Test API key: `API_TEST_KEY` or `POLAR_TEST_KEY`
+- Live API key: `API_PROD_KEY`, `POLAR_API_KEY`, or `POLAR_KEY`
+- Optional API override: `POLAR_BASE_URL`
+- Optional webhook secret: `POLAR_WEBHOOK_SECRET`
 
 Selection rules:
 
-- If `CREEM_ENV=test`, the app uses the Creem test API key and test API endpoint
-- If `CREEM_ENV=live`, the app uses the Creem live API key and live API endpoint
-- If `PAYMENT_PROVIDER` is omitted, Creem is selected whenever a Creem API key is present
-- PayPal variables are only used when `PAYMENT_PROVIDER=paypal` or no Creem API key is configured
+- If `POLAR_ENV=test`, the app uses the Polar test API key and test API endpoint
+- If `POLAR_ENV=live`, the app uses the Polar live API key and live API endpoint
+- If `PAYMENT_PROVIDER` is omitted, Polar is selected whenever a Polar API key is present
+- PayPal variables are only used when `PAYMENT_PROVIDER=paypal` or no Polar API key is configured
 
 ## 11. Troubleshooting
 

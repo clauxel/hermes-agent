@@ -1,16 +1,16 @@
 import { createHmac, timingSafeEqual } from 'node:crypto'
 
 export function createPaymentHelpers({
-  canUseCreemHostedReturnUrl,
-  creemApiKey,
-  creemBaseUrl,
-  creemIsTestMode,
-  findCreemProductStatement,
+  canUsePolarHostedReturnUrl,
+  polarApiKey,
+  polarBaseUrl,
+  polarIsTestMode,
+  findPolarProductStatement,
   findOrderByIdStatement,
   findOrderByPayPalOrderIdStatement,
   findUserByIdStatement,
   formatMoney,
-  getCreemReturnOrigin,
+  getPolarReturnOrigin,
   getPublicAppOrigin,
   guestUserEmail,
   HttpError,
@@ -25,13 +25,13 @@ export function createPaymentHelpers({
   queuePaidOrder,
   resolvePlanSelection,
   setOrderPayPalOrderId,
-  upsertCreemProductStatement,
+  upsertPolarProductStatement,
 }) {
   let resolvedPayPalBaseUrl = payPalResolvedBaseUrl
 
-  function requireCreemApiKey() {
-    if (!creemApiKey) {
-      throw new HttpError(503, 'Creem payment is not configured.')
+  function requirePolarApiKey() {
+    if (!polarApiKey) {
+      throw new HttpError(503, 'Polar payment is not configured.')
     }
   }
 
@@ -216,13 +216,13 @@ export function createPaymentHelpers({
     }
   }
 
-  async function creemRequest(path, { method = 'GET', body } = {}) {
-    requireCreemApiKey()
+  async function polarRequest(path, { method = 'GET', body } = {}) {
+    requirePolarApiKey()
 
-    const response = await fetch(`${creemBaseUrl}${path}`, {
+    const response = await fetch(`${polarBaseUrl}${path}`, {
       method,
       headers: {
-        'x-api-key': creemApiKey,
+        'x-api-key': polarApiKey,
         'Content-Type': 'application/json',
       },
       body: body ? JSON.stringify(body) : undefined,
@@ -233,7 +233,7 @@ export function createPaymentHelpers({
       if (response.status === 401 || response.status === 403) {
         throw new HttpError(
           502,
-          'Creem rejected the API key. Use a valid Test Mode API key from the Creem Developers section while Test Mode is enabled.',
+          'Polar rejected the API key. Use a valid Test Mode API key from the Polar Developers section while Test Mode is enabled.',
         )
       }
 
@@ -241,18 +241,18 @@ export function createPaymentHelpers({
         payload?.message ??
         payload?.error ??
         payload?.details?.message ??
-        `Creem request failed with status ${response.status}.`
+        `Polar request failed with status ${response.status}.`
       throw new HttpError(502, errorMessage)
     }
 
     return payload
   }
 
-  async function getCreemCheckoutSession(checkoutId) {
-    return await creemRequest(`/v1/checkouts?checkout_id=${encodeURIComponent(checkoutId)}`)
+  async function getPolarCheckoutSession(checkoutId) {
+    return await polarRequest(`/v1/checkouts?checkout_id=${encodeURIComponent(checkoutId)}`)
   }
 
-  function getCreemCheckoutId(payload) {
+  function getPolarCheckoutId(payload) {
     const candidates = [payload?.id, payload?.checkout_id, payload?.checkoutId]
 
     for (const candidate of candidates) {
@@ -264,7 +264,7 @@ export function createPaymentHelpers({
     return ''
   }
 
-  function getCreemCheckoutUrl(payload) {
+  function getPolarCheckoutUrl(payload) {
     const candidates = [payload?.checkout_url, payload?.checkoutUrl, payload?.url]
 
     for (const candidate of candidates) {
@@ -299,21 +299,21 @@ export function createPaymentHelpers({
     }
   }
 
-  function getCreemProductLookupKey(orderPricing, order) {
-    return `${creemIsTestMode ? 'test' : 'live'}:${orderPricing.planId}:${order.model_id}:${orderPricing.amountCents}:${orderPricing.currency}`
+  function getPolarProductLookupKey(orderPricing, order) {
+    return `${polarIsTestMode ? 'test' : 'live'}:${orderPricing.planId}:${order.model_id}:${orderPricing.amountCents}:${orderPricing.currency}`
   }
 
-  async function ensureCreemProductForOrder(order, request) {
+  async function ensurePolarProductForOrder(order, request) {
     const orderPricing = resolveOrderPricing(order)
-    const lookupKey = getCreemProductLookupKey(orderPricing, order)
-    const existingProduct = await findCreemProductStatement.get(lookupKey)
+    const lookupKey = getPolarProductLookupKey(orderPricing, order)
+    const existingProduct = await findPolarProductStatement.get(lookupKey)
     if (existingProduct) {
       return existingProduct.product_id
     }
 
     const productName = `Hermes ${orderPricing.plan.name} ${orderPricing.billingCycle === 'annual' ? 'Annual' : 'Monthly'}`
-    const returnOrigin = getCreemReturnOrigin(request)
-    const createdProduct = await creemRequest('/v1/products', {
+    const returnOrigin = getPolarReturnOrigin(request)
+    const createdProduct = await polarRequest('/v1/products', {
       method: 'POST',
       body: {
         name: productName,
@@ -323,7 +323,7 @@ export function createPaymentHelpers({
         billing_type: 'onetime',
         tax_mode: 'inclusive',
         tax_category: 'saas',
-        ...(canUseCreemHostedReturnUrl(returnOrigin)
+        ...(canUsePolarHostedReturnUrl(returnOrigin)
           ? {
               default_success_url: `${returnOrigin}/checkout`,
             }
@@ -332,7 +332,7 @@ export function createPaymentHelpers({
     })
 
     const timestamp = nowIso()
-    await upsertCreemProductStatement.run(
+    await upsertPolarProductStatement.run(
       lookupKey,
       createdProduct.id,
       orderPricing.amountCents,
@@ -344,13 +344,13 @@ export function createPaymentHelpers({
     return createdProduct.id
   }
 
-  async function createCreemCheckoutForOrder(order, request) {
-    const productId = await ensureCreemProductForOrder(order, request)
+  async function createPolarCheckoutForOrder(order, request) {
+    const productId = await ensurePolarProductForOrder(order, request)
     const orderOwner = await findUserByIdStatement.get(order.user_id)
-    const returnOrigin = getCreemReturnOrigin(request)
+    const returnOrigin = getPolarReturnOrigin(request)
     const guestTokenQuery = order.guest_token ? `&guest_token=${encodeURIComponent(order.guest_token)}` : ''
 
-    return await creemRequest('/v1/checkouts', {
+    return await polarRequest('/v1/checkouts', {
       method: 'POST',
       body: {
         product_id: productId,
@@ -371,8 +371,8 @@ export function createPaymentHelpers({
     })
   }
 
-  function verifyCreemRedirectSignature(params) {
-    requireCreemApiKey()
+  function verifyPolarRedirectSignature(params) {
+    requirePolarApiKey()
 
     const signature = params.signature
     if (!signature) {
@@ -386,7 +386,7 @@ export function createPaymentHelpers({
       .map((key) => `${key}=${params[key]}`)
       .join('&')
 
-    const expectedSignature = createHmac('sha256', creemApiKey).update(sortedParams).digest('hex')
+    const expectedSignature = createHmac('sha256', polarApiKey).update(sortedParams).digest('hex')
 
     if (expectedSignature.length !== signature.length) {
       return false
@@ -395,8 +395,8 @@ export function createPaymentHelpers({
     return timingSafeEqual(Buffer.from(expectedSignature, 'utf8'), Buffer.from(signature, 'utf8'))
   }
 
-  function verifyCreemWebhookSignature(rawPayload, signature) {
-    const webhookSecret = process.env.CREEM_WEBHOOK_SECRET ?? ''
+  function verifyPolarWebhookSignature(rawPayload, signature) {
+    const webhookSecret = process.env.POLAR_WEBHOOK_SECRET ?? ''
     if (!webhookSecret || !signature) {
       return false
     }
@@ -409,16 +409,16 @@ export function createPaymentHelpers({
     return timingSafeEqual(Buffer.from(expectedSignature, 'utf8'), Buffer.from(signature, 'utf8'))
   }
 
-  function getCreemWebhookEventType(payload) {
+  function getPolarWebhookEventType(payload) {
     return String(payload?.eventType ?? payload?.type ?? '').trim()
   }
 
-  function getCreemWebhookObject(payload) {
+  function getPolarWebhookObject(payload) {
     return payload?.object ?? payload?.data ?? payload?.checkout ?? payload
   }
 
-  function getCreemWebhookOrderId(payload) {
-    const object = getCreemWebhookObject(payload)
+  function getPolarWebhookOrderId(payload) {
+    const object = getPolarWebhookObject(payload)
     const candidates = [
       object?.request_id,
       object?.requestId,
@@ -615,12 +615,12 @@ export function createPaymentHelpers({
       } catch {}
     }
 
-    if (!order.creem_checkout_id) {
+    if (!order.polar_checkout_id) {
       return order
     }
 
     try {
-      const checkout = await getCreemCheckoutSession(order.creem_checkout_id)
+      const checkout = await getPolarCheckoutSession(order.polar_checkout_id)
       const checkoutStatus = String(checkout?.status ?? '').toLowerCase()
       const orderStatus = String(checkout?.order?.status ?? '').toLowerCase()
       const checkoutRequestId = checkout?.request_id ? String(checkout.request_id) : null
@@ -642,18 +642,18 @@ export function createPaymentHelpers({
 
   return {
     capturePayPalOrder,
-    createCreemCheckoutForOrder,
+    createPolarCheckoutForOrder,
     createPayPalOrderForOrder,
-    getCreemCheckoutId,
-    getCreemCheckoutSession,
-    getCreemCheckoutUrl,
-    getCreemWebhookEventType,
-    getCreemWebhookOrderId,
+    getPolarCheckoutId,
+    getPolarCheckoutSession,
+    getPolarCheckoutUrl,
+    getPolarWebhookEventType,
+    getPolarWebhookOrderId,
     getPayPalCheckoutUrl,
     handlePayPalWebhook,
     reconcileOrderPayment,
-    verifyCreemRedirectSignature,
-    verifyCreemWebhookSignature,
+    verifyPolarRedirectSignature,
+    verifyPolarWebhookSignature,
     verifyPayPalWebhookSignature,
   }
 }

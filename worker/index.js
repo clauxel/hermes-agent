@@ -1,4 +1,4 @@
-import { handleNowPaymentsCheckout } from './nowpayments.js'
+import { handlePolarCheckout, isPolarCheckoutConfigured } from './polar.js'
 
 const CANONICAL_ORIGIN = 'https://hermesagent.studio'
 const CANONICAL_HOSTS = new Set(['hermesagent.studio', 'www.hermesagent.studio'])
@@ -300,7 +300,7 @@ async function readBindingValue(value) {
 }
 
 async function getPaymentKey(env) {
-  for (const name of ['API_PROD_KEY', 'CREEM_API_KEY', 'CREEM_KEY']) {
+  for (const name of ['API_PROD_KEY', 'POLAR_API_KEY', 'POLAR_KEY']) {
     const value = await readBindingValue(env[name])
     if (value) return value
   }
@@ -312,7 +312,7 @@ async function getSigningSecret(env) {
   if (configuredSecret) return configuredSecret
   const paymentKey = await getPaymentKey(env)
   if (paymentKey) return paymentKey
-  throw new HttpError(503, 'Creem payment is not configured.')
+  throw new HttpError(503, 'Polar payment is not configured.')
 }
 
 async function createSignature(secret, encodedPayload) {
@@ -459,17 +459,17 @@ async function readOrderFromRequest(request, url, env, expectedOrderId) {
   return { order, guestToken }
 }
 
-function getCreemBaseUrl(env) {
-  if (env.CREEM_BASE_URL) return env.CREEM_BASE_URL
-  const mode = String(env.CREEM_ENV || env.CREEM_MODE || 'live').toLowerCase()
-  return mode === 'test' ? 'https://test-api.creem.io' : 'https://api.creem.io'
+function getPolarBaseUrl(env) {
+  if (env.POLAR_BASE_URL) return env.POLAR_BASE_URL
+  const mode = String(env.POLAR_ENV || env.POLAR_MODE || 'live').toLowerCase()
+  return mode === 'test' ? 'https://test-api.polar.sh' : 'https://api.polar.sh'
 }
 
-async function creemRequest(env, path, { method = 'GET', body } = {}) {
+async function polarRequest(env, path, { method = 'GET', body } = {}) {
   const paymentKey = await getPaymentKey(env)
-  if (!paymentKey) throw new HttpError(503, 'Creem payment is not configured.')
+  if (!paymentKey) throw new HttpError(503, 'Polar payment is not configured.')
 
-  const response = await fetch(`${getCreemBaseUrl(env)}${path}`, {
+  const response = await fetch(`${getPolarBaseUrl(env)}${path}`, {
     method,
     headers: {
       'x-api-key': paymentKey,
@@ -484,14 +484,14 @@ async function creemRequest(env, path, { method = 'GET', body } = {}) {
       payload?.message ||
       payload?.error ||
       payload?.details?.message ||
-      `Creem request failed with status ${response.status}.`
+      `Polar request failed with status ${response.status}.`
     throw new HttpError(502, message)
   }
 
   return payload
 }
 
-function getCreemCheckoutUrl(payload) {
+function getPolarCheckoutUrl(payload) {
   for (const candidate of [payload?.checkout_url, payload?.checkoutUrl, payload?.url]) {
     if (candidate) return String(candidate)
   }
@@ -506,20 +506,20 @@ function getCreemCheckoutUrl(payload) {
   return link?.href ? String(link.href) : ''
 }
 
-function getCreemCheckoutId(payload) {
+function getPolarCheckoutId(payload) {
   for (const candidate of [payload?.id, payload?.checkout_id, payload?.checkoutId]) {
     if (candidate) return String(candidate)
   }
   return ''
 }
 
-async function ensureCreemProduct(env, order) {
+async function ensurePolarProduct(env, order) {
   const model = getModelById(order.modelId)
   const planSelection = resolvePlanSelection(order.planId, { model })
   const cacheKey = `${planSelection.planId}:${order.modelId}:${order.amountCents}:${order.currency}`
   if (productCache.has(cacheKey)) return productCache.get(cacheKey)
 
-  const product = await creemRequest(env, '/v1/products', {
+  const product = await polarRequest(env, '/v1/products', {
     method: 'POST',
     body: {
       name: `Hermes ${planSelection.plan.name} ${planSelection.billingCycle === 'annual' ? 'Annual' : 'Monthly'}`,
@@ -533,16 +533,16 @@ async function ensureCreemProduct(env, order) {
     },
   })
 
-  if (!product?.id) throw new HttpError(502, 'Creem product creation did not return a product ID.')
+  if (!product?.id) throw new HttpError(502, 'Polar product creation did not return a product ID.')
   productCache.set(cacheKey, product.id)
   return product.id
 }
 
-async function createCreemCheckout(env, request, order, guestToken) {
-  const productId = await ensureCreemProduct(env, order)
+async function createPolarCheckout(env, request, order, guestToken) {
+  const productId = await ensurePolarProduct(env, order)
   const returnOrigin = getPublicOrigin(request)
   const successUrl = `${returnOrigin}/checkout?order=${encodeURIComponent(order.id)}&guest_token=${encodeURIComponent(guestToken)}`
-  const checkout = await creemRequest(env, '/v1/checkouts', {
+  const checkout = await polarRequest(env, '/v1/checkouts', {
     method: 'POST',
     body: {
       product_id: productId,
@@ -557,10 +557,10 @@ async function createCreemCheckout(env, request, order, guestToken) {
       },
     },
   })
-  const checkoutUrl = getCreemCheckoutUrl(checkout)
-  const checkoutId = getCreemCheckoutId(checkout)
+  const checkoutUrl = getPolarCheckoutUrl(checkout)
+  const checkoutId = getPolarCheckoutId(checkout)
 
-  if (!checkoutUrl) throw new HttpError(502, 'Creem checkout did not return a hosted checkout URL.')
+  if (!checkoutUrl) throw new HttpError(502, 'Polar checkout did not return a hosted checkout URL.')
   return { checkoutUrl, checkoutId }
 }
 
@@ -571,8 +571,8 @@ function checkoutIsPaid(payload) {
 }
 
 async function handleApi(url, request, env) {
-  if (url.pathname === '/api/nowpayments-checkout') {
-    return handleNowPaymentsCheckout(request, env, {
+  if (url.pathname === '/api/polar-checkout') {
+    return handlePolarCheckout(request, env, {
       plans: planCatalog,
       defaultPlanId: 'growth',
       siteName: 'Hermes Agent',
@@ -586,8 +586,8 @@ async function handleApi(url, request, env) {
       environment: 'production',
       isDevelopment: false,
       publicAppOrigin: getPublicOrigin(request),
-      paymentProvider: 'creem',
-      paymentMode: String(env.CREEM_ENV || 'live'),
+      paymentProvider: 'polar',
+      paymentMode: String(env.POLAR_ENV || 'live'),
       maintenance: false,
     })
   }
@@ -626,11 +626,11 @@ async function handleApi(url, request, env) {
   const checkoutMatch = url.pathname.match(/^\/api\/orders\/([a-f0-9]+)\/checkout-session$/)
   if (checkoutMatch && request.method === 'POST') {
     const { order, guestToken } = await readOrderFromRequest(request, url, env, checkoutMatch[1])
-    const { checkoutUrl, checkoutId } = await createCreemCheckout(env, request, order, guestToken)
+    const { checkoutUrl, checkoutId } = await createPolarCheckout(env, request, order, guestToken)
     const timestamp = new Date().toISOString()
 
     return jsonResponse({
-      message: 'Creem checkout is ready.',
+      message: 'Polar checkout is ready.',
       order: serializeOrder(
         {
           ...order,
@@ -639,8 +639,8 @@ async function handleApi(url, request, env) {
         guestToken,
       ),
       checkoutUrl,
-      paymentProvider: 'creem',
-      creemCheckoutId: checkoutId || null,
+      paymentProvider: 'polar',
+      polarCheckoutId: checkoutId || null,
       paypalOrderId: null,
       paypalClientId: null,
     })
@@ -674,18 +674,18 @@ async function handleApi(url, request, env) {
     }
   }
 
-  const creemConfirmMatch = url.pathname.match(/^\/api\/orders\/([a-f0-9]+)\/creem-confirm$/)
-  if (creemConfirmMatch && request.method === 'POST') {
+  const polarConfirmMatch = url.pathname.match(/^\/api\/orders\/([a-f0-9]+)\/polar-confirm$/)
+  if (polarConfirmMatch && request.method === 'POST') {
     const body = await readJsonBody(request)
     const redirectParams = body.redirectParams && typeof body.redirectParams === 'object' ? body.redirectParams : {}
     const guestToken = request.headers.get('x-hermes-guest-token') || redirectParams.guest_token || url.searchParams.get('guest_token') || ''
     const order = await verifyOrderToken(guestToken, env)
-    if (order.id !== creemConfirmMatch[1]) throw new HttpError(403, 'Order access denied.')
+    if (order.id !== polarConfirmMatch[1]) throw new HttpError(403, 'Order access denied.')
 
     const checkoutId = redirectParams.checkout_id || redirectParams.checkoutId || redirectParams.id || ''
     let paid = false
     if (checkoutId) {
-      const checkout = await creemRequest(env, `/v1/checkouts?checkout_id=${encodeURIComponent(checkoutId)}`)
+      const checkout = await polarRequest(env, `/v1/checkouts?checkout_id=${encodeURIComponent(checkoutId)}`)
       const checkoutRequestId = checkout?.request_id ? String(checkout.request_id) : null
       if (!checkoutRequestId || checkoutRequestId === order.id) paid = checkoutIsPaid(checkout)
     }
@@ -713,7 +713,7 @@ async function handleApi(url, request, env) {
     )
 
     return jsonResponse({
-      message: paid ? 'Creem payment confirmed.' : 'Checkout is still pending confirmation.',
+      message: paid ? 'Polar payment confirmed.' : 'Checkout is still pending confirmation.',
       order: serializedOrder,
     })
   }

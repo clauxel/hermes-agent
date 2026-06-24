@@ -274,7 +274,7 @@ async function initializePostgresDatabase(database) {
       included_deployments INTEGER NOT NULL DEFAULT 1,
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL,
-      creem_checkout_id TEXT,
+      polar_checkout_id TEXT,
       paypal_order_id TEXT,
       paid_at TEXT
     );
@@ -331,7 +331,7 @@ async function initializePostgresDatabase(database) {
       updated_at TEXT NOT NULL
     );
 
-    CREATE TABLE IF NOT EXISTS creem_products (
+    CREATE TABLE IF NOT EXISTS polar_products (
       lookup_key TEXT PRIMARY KEY,
       product_id TEXT NOT NULL UNIQUE,
       amount_cents INTEGER NOT NULL,
@@ -387,7 +387,7 @@ async function initializePostgresDatabase(database) {
 
   await database.exec(`
     ALTER TABLE orders ADD COLUMN IF NOT EXISTS guest_token TEXT;
-    ALTER TABLE orders ADD COLUMN IF NOT EXISTS creem_checkout_id TEXT;
+    ALTER TABLE orders ADD COLUMN IF NOT EXISTS polar_checkout_id TEXT;
     ALTER TABLE orders ADD COLUMN IF NOT EXISTS paypal_order_id TEXT;
     ALTER TABLE orders ADD COLUMN IF NOT EXISTS included_deployments INTEGER NOT NULL DEFAULT 1;
     ALTER TABLE deployments ADD COLUMN IF NOT EXISTS sequence_number INTEGER;

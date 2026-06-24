@@ -3,9 +3,9 @@ import { createExactRoute } from './route-utils.mjs'
 export function createWebhookRoutes(deps) {
   const {
     readTextBody,
-    verifyCreemWebhookSignature,
-    getCreemWebhookEventType,
-    getCreemWebhookOrderId,
+    verifyPolarWebhookSignature,
+    getPolarWebhookEventType,
+    getPolarWebhookOrderId,
     findOrderByIdStatement,
     queuePaidOrder,
     sendJson,
@@ -15,20 +15,20 @@ export function createWebhookRoutes(deps) {
   } = deps
 
   return [
-    createExactRoute('POST', '/api/webhooks/creem', async ({ request, response }) => {
+    createExactRoute('POST', '/api/webhooks/polar', async ({ request, response }) => {
       const rawPayload = await readTextBody(request)
-      const signatureHeader = request.headers['creem-signature']
+      const signatureHeader = request.headers['polar-signature']
       const signature = Array.isArray(signatureHeader) ? signatureHeader[0] : signatureHeader
 
-      if (!verifyCreemWebhookSignature(rawPayload, String(signature ?? ''))) {
-        throw new HttpError(401, 'Creem webhook signature is invalid.')
+      if (!verifyPolarWebhookSignature(rawPayload, String(signature ?? ''))) {
+        throw new HttpError(401, 'Polar webhook signature is invalid.')
       }
 
       const payload = rawPayload ? JSON.parse(rawPayload) : {}
-      const eventType = getCreemWebhookEventType(payload)
+      const eventType = getPolarWebhookEventType(payload)
 
       if (eventType === 'checkout.completed') {
-        const orderId = getCreemWebhookOrderId(payload)
+        const orderId = getPolarWebhookOrderId(payload)
         const order = orderId ? await findOrderByIdStatement.get(orderId) : null
 
         if (order) {

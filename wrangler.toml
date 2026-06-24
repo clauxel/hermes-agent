@@ -10,8 +10,8 @@ routes = [
 
 [vars]
 APP_ORIGIN = "https://hermesagent.studio"
-PAYMENT_PROVIDER = "creem"
-CREEM_ENV = "live"
+PAYMENT_PROVIDER = "polar"
+POLAR_ENV = "live"
 
 [assets]
 directory = "./dist"

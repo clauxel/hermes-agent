@@ -26,7 +26,7 @@ export function createSecurityHelpers({
     return getAbsoluteRequestOrigin(request)
   }
 
-  function getCreemReturnOrigin(request) {
+  function getPolarReturnOrigin(request) {
     const requestOrigin = getPublicAppOrigin(request)
     if (requestOrigin.includes('127.0.0.1')) {
       return requestOrigin.replace('127.0.0.1', 'localhost')
@@ -35,7 +35,7 @@ export function createSecurityHelpers({
     return requestOrigin
   }
 
-  function canUseCreemHostedReturnUrl(origin) {
+  function canUsePolarHostedReturnUrl(origin) {
     return !origin.includes('localhost') && !origin.includes('127.0.0.1') && !origin.includes('[::1]') && !origin.includes('::1')
   }
 
@@ -95,9 +95,9 @@ export function createSecurityHelpers({
   return {
     applyCorsHeaders,
     applySecurityHeaders,
-    canUseCreemHostedReturnUrl,
+    canUsePolarHostedReturnUrl,
     getConfiguredAppOrigins,
-    getCreemReturnOrigin,
+    getPolarReturnOrigin,
     getPublicAppOrigin,
     verifyOrigin,
   }

@@ -144,8 +144,8 @@ export type CheckoutSessionResponse = {
   message: string
   order: OrderRecord
   checkoutUrl: string | null
-  paymentProvider?: 'creem' | 'paypal'
-  creemCheckoutId?: string | null
+  paymentProvider?: 'polar' | 'paypal'
+  polarCheckoutId?: string | null
   paypalOrderId: string | null
   paypalClientId: string | null
 }

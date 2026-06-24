@@ -465,7 +465,7 @@ Hermes Agent 是一个以转化率优先为目标的部署流程。面向希望�
 
 ### 回跳处理规则
 
-- 当 `/checkout` 或 `/console` URL 中包含 `checkout_id` 时，前端必须优先执行 Creem 支付确认，而不是先加载旧订单数据
+- 当 `/checkout` 或 `/console` URL 中包含 `checkout_id` 时，前端必须优先执行 Polar 支付确认，而不是先加载旧订单数据
 - 当 `/checkout` 或 `/console` URL 中包含 `token` 与 `PayerID` 时，前端必须优先执行 PayPal capture，而不是先加载旧订单数据
 - 支付确认成功后，再刷新控制台数据并跳转到干净地址
 - 这样可以避免“旧的 pending 结果晚返回，覆盖新的 paid 状态”的竞态问题

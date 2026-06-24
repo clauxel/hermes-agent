@@ -76,7 +76,7 @@ type StatelessCheckoutResponse = {
   ok?: boolean
   message?: string
   checkoutUrl?: string
-  paymentProvider?: 'nowpayments'
+  paymentProvider?: 'polar'
   orderId?: string
 }
 
@@ -203,7 +203,7 @@ function App() {
     return rawRedirect
   }, [checkoutSearchParams])
   const selectedOrderId = useMemo(() => checkoutSearchParams.get('order'), [checkoutSearchParams])
-  const hasCreemRedirectParams = useMemo(
+  const hasPolarRedirectParams = useMemo(
     () => Boolean(checkoutSearchParams.get('checkout_id')),
     [checkoutSearchParams],
   )
@@ -216,7 +216,7 @@ function App() {
     () => Boolean(payPalRedirectOrderId && payPalRedirectPayerId),
     [payPalRedirectOrderId, payPalRedirectPayerId],
   )
-  const hasHostedCheckoutRedirect = hasCreemRedirectParams || hasPayPalRedirectParams
+  const hasHostedCheckoutRedirect = hasPolarRedirectParams || hasPayPalRedirectParams
 
   const selectedModel = useMemo(
     () => models.find((item) => item.id === selectedModelId) ?? models[1],
@@ -728,7 +728,7 @@ function App() {
   }
 
   const createStatelessCheckoutSession = async (planId: string) => {
-    return await apiRequest<StatelessCheckoutResponse>('/api/nowpayments-checkout', {
+    return await apiRequest<StatelessCheckoutResponse>('/api/polar-checkout', {
       method: 'POST',
       body: JSON.stringify({
         planId,
@@ -750,7 +750,7 @@ function App() {
     setSelectedPlanId(planId)
   }
 
-  const handlePlanLaunch = async (provider: 'creem' | 'nowpayments' = 'creem') => {
+  const handlePlanLaunch = async (provider: 'polar' | 'polar' = 'polar') => {
     if (!selectedChannel) {
       setStatusMessage('Choose the first live channel for this deployment before checkout.')
       return
@@ -759,7 +759,7 @@ function App() {
     setLaunchSubmitting(true)
 
     try {
-      if (provider === 'nowpayments') {
+      if (provider === 'polar') {
         const checkoutResponse = await createStatelessCheckoutSession(`${selectedPlan.id}:${billingCycle}`)
         if (!checkoutResponse.checkoutUrl) {
           throw new Error(checkoutResponse.message || 'USDC wallet checkout is unavailable.')
@@ -771,7 +771,7 @@ function App() {
           metadata: {
             planId: `${selectedPlan.id}:${billingCycle}`,
             billingCycle,
-            paymentProvider: 'nowpayments',
+            paymentProvider: 'polar',
             popupMode: opened ? 'popup' : 'redirect',
           },
         })
@@ -1197,15 +1197,15 @@ function App() {
   }
 
   useEffect(() => {
-    if (!authReady || routeView !== 'console' || !selectedOrderId || !hasCreemRedirectParams) return
+    if (!authReady || routeView !== 'console' || !selectedOrderId || !hasPolarRedirectParams) return
 
-    const confirmCreemRedirect = async () => {
+    const confirmPolarRedirect = async () => {
       setPaymentSubmittingOrderId(selectedOrderId)
       setConsoleError('')
 
       try {
         const response = await apiRequest<{ message: string; order: OrderRecord }>(
-          `/api/orders/${selectedOrderId}/creem-confirm`,
+          `/api/orders/${selectedOrderId}/polar-confirm`,
           {
             method: 'POST',
             body: JSON.stringify({
@@ -1226,8 +1226,8 @@ function App() {
       }
     }
 
-    void confirmCreemRedirect()
-  }, [authReady, checkoutSearchParams, hasCreemRedirectParams, routeView, selectedOrderId])
+    void confirmPolarRedirect()
+  }, [authReady, checkoutSearchParams, hasPolarRedirectParams, routeView, selectedOrderId])
 
   useEffect(() => {
     if (!authReady || routeView !== 'console' || !selectedOrderId || !hasPayPalRedirectParams || !payPalRedirectOrderId) return
@@ -2151,7 +2151,7 @@ function App() {
                   <button type="button" className="deploy-button" onClick={() => void handlePlanLaunch()} disabled={launchSubmitting}>
                     {launchSubmitting ? 'Preparing checkout...' : 'Launch'}
                   </button>
-                  <button type="button" className="secondary-button" onClick={() => void handlePlanLaunch('nowpayments')} disabled={launchSubmitting}>
+                  <button type="button" className="secondary-button" onClick={() => void handlePlanLaunch('polar')} disabled={launchSubmitting}>
                     Pay with USDC Wallet
                   </button>
                 </div>
