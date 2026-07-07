@@ -73,6 +73,8 @@ test('访客行为追踪支持批量写入、管理员摘要与敏感 URL 脱敏
   const tempDir = createTempDirectory('hermes-analytics-')
   const configPath = join(tempDir, 'hermes-agent.config.json')
   createTestConfig(configPath)
+  const sessionStartedAt = new Date(Date.now() - 60_000).toISOString()
+  const occurredAt = (offsetMs) => new Date(Date.now() - 60_000 + offsetMs).toISOString()
 
   const port = 4317
   const server = await startTestServer({
@@ -118,8 +120,8 @@ test('访客行为追踪支持批量写入、管理员摘要与敏感 URL 脱敏
             id: 'event-page-view',
             visitorId: 'visitor-123',
             sessionId: 'session-123',
-            sessionStartedAt: '2026-04-03T00:00:00.000Z',
-            occurredAt: '2026-04-03T00:00:01.000Z',
+            sessionStartedAt,
+            occurredAt: occurredAt(1000),
             eventType: 'page',
             eventName: 'page_view',
             routePath: '/?utm_source=ad&guest_token=secret',
@@ -131,8 +133,8 @@ test('访客行为追踪支持批量写入、管理员摘要与敏感 URL 脱敏
             id: 'event-pricing',
             visitorId: 'visitor-123',
             sessionId: 'session-123',
-            sessionStartedAt: '2026-04-03T00:00:00.000Z',
-            occurredAt: '2026-04-03T00:00:03.000Z',
+            sessionStartedAt,
+            occurredAt: occurredAt(3000),
             eventType: 'section',
             eventName: 'content_view',
             routePath: '/?utm_source=ad&token=paypal-secret',
@@ -142,8 +144,8 @@ test('访客行为追踪支持批量写入、管理员摘要与敏感 URL 脱敏
             id: 'event-launch',
             visitorId: 'visitor-123',
             sessionId: 'session-123',
-            sessionStartedAt: '2026-04-03T00:00:00.000Z',
-            occurredAt: '2026-04-03T00:00:05.000Z',
+            sessionStartedAt,
+            occurredAt: occurredAt(5000),
             eventType: 'business',
             eventName: 'launch_clicked',
             routePath: '/',
@@ -152,8 +154,8 @@ test('访客行为追踪支持批量写入、管理员摘要与敏感 URL 脱敏
             id: 'event-checkout',
             visitorId: 'visitor-123',
             sessionId: 'session-123',
-            sessionStartedAt: '2026-04-03T00:00:00.000Z',
-            occurredAt: '2026-04-03T00:00:06.000Z',
+            sessionStartedAt,
+            occurredAt: occurredAt(6000),
             eventType: 'business',
             eventName: 'checkout_started',
             routePath: '/plans',
@@ -162,8 +164,8 @@ test('访客行为追踪支持批量写入、管理员摘要与敏感 URL 脱敏
             id: 'event-payment',
             visitorId: 'visitor-123',
             sessionId: 'session-123',
-            sessionStartedAt: '2026-04-03T00:00:00.000Z',
-            occurredAt: '2026-04-03T00:00:09.000Z',
+            sessionStartedAt,
+            occurredAt: occurredAt(9000),
             eventType: 'business',
             eventName: 'payment_completed',
             routePath: '/checkout?PayerID=hidden',

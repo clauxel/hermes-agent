@@ -1,7 +1,12 @@
 import { handlePolarCheckout, isPolarCheckoutConfigured } from './polar.js'
 
 const CANONICAL_ORIGIN = 'https://hermesagent.studio'
-const CANONICAL_HOSTS = new Set(['hermesagent.studio', 'www.hermesagent.studio'])
+const CANONICAL_HOSTS = new Set([
+  'hermesagent.studio',
+  'www.hermesagent.studio',
+  'hermes-agent.space',
+  'www.hermes-agent.space',
+])
 const annualBillingMultiplier = 0.65
 const modelDiscountMultiplier = 0.5
 
